@@ -61,6 +61,55 @@ public:
     }
 };
 ```
+
+## Java Code
+```java
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        // number of characters in the given string
+        int n = s.length();
+
+        /*
+            This boolean array stores TRUE (1) and FALSE (0) for each 
+            of the n positions of the string. 
+
+            TRUE means: there exists a possible combination of words
+                        from the dictionary to create the prefix upto
+                        the position i-1. (substring [0..i-1])
+
+            FALSE means: since the prefix cannot be made, it is useless
+                         to go on.
+        */
+        boolean arr[] = new boolean[n+1];
+        Arrays.fill(arr,false); // initialised to False
+        
+        arr[0] = true; 
+        // first position is obviously true because the prefix is an empty string
+
+        for (int i = 0; i < n; i++)
+        {
+            if (arr[i] == false) // => no valid prefix upto i-1
+                continue;
+
+            /*
+            we loop over all words in the dictionary to find all further
+            extensions of the prefix
+            */
+
+            for (String word: wordDict)
+            {
+                if (i + word.length() <= n && s.substring(i, i + word.length()).equals(word) == true )
+                    arr[i + word.length()] = true;
+            }
+        }
+
+        /* arr[n] represents if it is possible to create the substring [0..n-1],
+           which is the string itself, and hence our answer */
+        return arr[n];
+    }
+}
+```
+
 ## Complexity Analysis:
 
 ### Space complexity
